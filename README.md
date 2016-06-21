@@ -39,6 +39,10 @@ cache.readFile('README.md').then(function(content) {
 });
 ```
 
+Options:
+
+All options except the `fileProcessor` are equal to [chokidar](https://github.com/paulmillr/chokidar#getting-started).
+
 
 # Changelog
 
