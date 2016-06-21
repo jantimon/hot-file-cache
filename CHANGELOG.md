@@ -1,3 +1,7 @@
+## 0.0.4
+
+- Fix windows and linux issues
+
 ## 0.0.3
 
 - Add helper function `getFiles`

@@ -1,6 +1,6 @@
 {
   "name": "hot-file-cache",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A file cache for development which will invalidate automatically if the source changes",
   "main": "index.js",
   "scripts": {
