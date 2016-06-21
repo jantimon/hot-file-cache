@@ -52,7 +52,7 @@ Visualisation
 ```javascript
 var hfc = new HotFileCache('*.json', {
   cwd: dir,
-  fileProcessor: function (filename, fileContent) {
+  fileProcessor: function process (filename, fileContent) {
     return JSON.parse(fileContent);
   }
 });

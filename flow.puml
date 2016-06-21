@@ -11,7 +11,7 @@ control fileProcessor
 
 api -> cache : readFile('example.json') // 1
 cache -> disk : readFile('example.json')
-disk -> fileProcessor : process('{"x" : 1}')
+disk -> fileProcessor : process('example.json', '{"x" : 1}')
 fileProcessor -> cache : cache({x:1})
 cache -> api: return {x:1}
 ... ... 
@@ -19,9 +19,10 @@ api -> cache : readFile('example.json') // 2
 cache -> api: return {x:1}
 ... ... 
 disk -> cache : file 'example.json' changed
+... ... 
 api -> cache : readFile('example.json')  // 3
 cache -> disk : readFile('example.json')
-disk -> fileProcessor : process('{"a" : 9}')
+disk -> fileProcessor : process('example.json', '{"a" : 9}')
 fileProcessor -> cache : cache({a:9}) 
 cache -> api: return {a:9}
 ... ... 
