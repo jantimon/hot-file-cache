@@ -5,6 +5,12 @@ Hot File Cache
 
 A file cache which will invalidate automatically if the source changes
 
+Concept
+-----------
+
+[![Concept flow uml](https://raw.githubusercontent.com/jantimon/hot-file-cache/master/flow.png)](https://github.com/jantimon/hot-file-cache/blob/master/flow.puml)
+
+
 Installation
 ------------
 
