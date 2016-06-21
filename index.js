@@ -18,11 +18,22 @@ function HotFileCache (patterns, options) {
   delete (options.fileProcessors);
   // Initialize cache
   this.cache = {};
+  // Watched files
+  this.watched = [];
   // Initialize chokidar
   this.watcher = new Promise(function (resolve, reject) {
     var watcher = chokidar.watch(this.patterns, this.options);
     watcher.on('ready', resolve.bind(null, watcher));
     watcher.on('error', reject);
+    watcher.on('add', function (file) {
+      this.watched.push(file);
+    }.bind(this));
+    watcher.on('unlink', function (file) {
+      var index = this.watched.indexOf(file);
+      if (index !== -1) {
+        this.watched.splice(index, 1);
+      }
+    }.bind(this));
   }.bind(this));
   // Init watcher on file changes
   this.watcher.then(function (watcher) {
@@ -48,15 +59,8 @@ HotFileCache.prototype.fileExists = function (file) {
  */
 HotFileCache.prototype.getFiles = function () {
   return this.watcher.then(function (watcher) {
-    var watched = watcher.getWatched();
-    var files = [];
-    Object.keys(watched).forEach(function (folder) {
-      Array.prototype.push.apply(files, watched[folder].map(function (file) {
-        return path.join(folder, file);
-      }));
-    });
-    return files;
-  });
+    return this.watched;
+  }.bind(this));
 };
 
 /**
