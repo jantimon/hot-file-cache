@@ -31,8 +31,9 @@ Processors
 ```javascript
 var hfc = new HotFileCache('*.json', {
   cwd: dir,
-  fileProcessor: function (fileContent) {
-    // this will be executed only once per file
+  // the fileProcessor will be executed only once per file
+  fileProcessor: function (filename, fileContent) {
+    // the return value could also be a promise
     return JSON.parse(fileContent);
   }
 });
@@ -51,8 +52,7 @@ Visualisation
 ```javascript
 var hfc = new HotFileCache('*.json', {
   cwd: dir,
-  fileProcessor: function (fileContent) {
-    // this will be executed only once per file
+  fileProcessor: function (filename, fileContent) {
     return JSON.parse(fileContent);
   }
 });
