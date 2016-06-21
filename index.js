@@ -44,6 +44,22 @@ HotFileCache.prototype.fileExists = function (file) {
 };
 
 /**
+ * Returns a list of all existing files matching the pattern
+ */
+HotFileCache.prototype.getFiles = function () {
+  return this.watcher.then(function (watcher) {
+    var watched = watcher.getWatched();
+    var files = [];
+    Object.keys(watched).forEach(function (folder) {
+      Array.prototype.push.apply(files, watched[folder].map(function (file) {
+        return path.join(folder, file);
+      }));
+    });
+    return files;
+  });
+};
+
+/**
  * Reads a file and executes the file processors
  */
 HotFileCache.prototype.readFile = function (file) {

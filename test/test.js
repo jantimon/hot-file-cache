@@ -72,6 +72,15 @@ test('fileExists', async t => {
     t.pass();
 });
 
+test('get files', async t => {
+    const dir = await createTestEnvironment();
+    const processor = (file, fileContent) => JSON.parse(fileContent);
+    const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir, fileProcessor: processor});
+    var result = await cache.getFiles();
+    t.deepEqual(result, ['file1.md', 'subdir/file2.json','subdir/subsubdir/file3.json']);
+    t.pass();
+});
+
 test('file processor', async t => {
     const dir = await createTestEnvironment();
     const processor = (file, fileContent) => JSON.parse(fileContent);
