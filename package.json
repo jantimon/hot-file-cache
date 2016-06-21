@@ -1,0 +1,34 @@
+{
+  "name": "hot-file-cache",
+  "version": "0.0.1",
+  "description": "A file cache for development which will invalidate automatically if the source changes",
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "npm test",
+    "test": "ava",
+    "posttest": "semistandard index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "author": "Jan Nicklas",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jantimon/hot-file-cache.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jantimon/hot-file-cache/issues"
+  },
+  "dependencies": {
+    "chokidar": "^1.5.2",
+    "denodeify": "^1.2.1",
+    "globule": "^1.0.0"
+  },
+  "devDependencies": {
+    "ava": "^0.15.2",
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0",
+    "rimraf": "^2.5.2"
+  }
+}
