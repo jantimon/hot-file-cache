@@ -26,7 +26,7 @@ function HotFileCache (patterns, options) {
     watcher.on('ready', resolve.bind(null, watcher));
     watcher.on('error', reject);
     watcher.on('add', function (file) {
-      this.watched.push(file);
+      this.watched.push(path.join(this.options.cwd, file));
     }.bind(this));
     watcher.on('unlink', function (file) {
       var index = this.watched.indexOf(file);
@@ -47,10 +47,11 @@ Object.setPrototypeOf(HotFileCache.prototype, EventEmitter.prototype);
  * Returns true if the given file exists
  */
 HotFileCache.prototype.fileExists = function (file) {
-  var relativeFile = path.relative(this.options.cwd, file);
-  return this.watcher.then(function (watcher) {
-    var files = watcher.getWatched();
-    return files[path.dirname(relativeFile) || '.'].indexOf(path.basename(relativeFile)) !== -1;
+  if (!this.isFileWatched(file)) {
+    throw new Error('File ' + file + ' does not match any pattern');
+  }
+  return this.getFiles().then(function (files) {
+    return files.indexOf(file) !== -1;
   });
 };
 
@@ -69,8 +70,8 @@ HotFileCache.prototype.getFiles = function () {
 HotFileCache.prototype.readFile = function (file) {
   var cache = this.cache;
   var relativeFile = path.relative(this.options.cwd, file);
-  if (!globule.isMatch(this.patterns, relativeFile)) {
-    return Promise.reject('File ' + file + ' does not match any pattern');
+  if (!this.isFileWatched(file)) {
+    throw new Error('File ' + file + ' does not match any pattern');
   }
   return this.watcher.then(function () {
     if (!cache[relativeFile]) {
@@ -87,6 +88,14 @@ HotFileCache.prototype.readFile = function (file) {
     }
     return cache[relativeFile];
   }.bind(this));
+};
+
+/**
+ * Returns true if the given file matches the current patterns.
+ */
+HotFileCache.prototype.isFileWatched = function (file) {
+  var relativeFile = path.relative(this.options.cwd, file);
+  return globule.isMatch(this.patterns, relativeFile);
 };
 
 /**

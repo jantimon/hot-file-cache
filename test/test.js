@@ -72,15 +72,49 @@ test('fileExists', async t => {
     t.pass();
 });
 
+test('fileExists throws error for unwatched file', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});
+    let error;
+    try {
+        await cache.fileExists(path.join(dir, 'file0.txt'));
+    } catch (e) {
+        error = e;
+    }
+    t.regex(error, /does not match any pattern/);
+    t.pass();
+});
+
+test('fileRead throws error for unwatched file', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});
+    let error;
+    try {
+        await cache.readFile(path.join(dir, 'does-not-exist.txt'));
+    } catch (e) {
+        error = e;
+    }
+    t.regex(error, /does not match any pattern/);
+    t.pass();
+});
+
+test('isFileWatched', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});
+    t.is(await cache.isFileWatched(path.join(dir, 'file1.md')), true);
+    t.is(await cache.isFileWatched(path.join(dir, 'file0.txt')), false);
+    t.pass();
+});
+
 test('get files', async t => {
     const dir = await createTestEnvironment();
     const processor = (file, fileContent) => JSON.parse(fileContent);
     const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir, fileProcessor: processor});
     var result = await cache.getFiles();
     t.deepEqual(result, [
-        'file1.md', 
-        path.join('subdir', 'file2.json'),
-        path.join('subdir', 'subsubdir', 'file3.json')
+        path.join(dir, 'file1.md'), 
+        path.join(dir, 'subdir', 'file2.json'),
+        path.join(dir, 'subdir', 'subsubdir', 'file3.json')
     ]);
     t.pass();
 });

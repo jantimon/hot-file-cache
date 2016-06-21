@@ -1,3 +1,10 @@
+## 0.0.5
+
+- BREAKING CHANGE: `getFiles` returns absolute paths
+- `readFile` throws if pattern does not match
+- `fileExists` throws if pattern does not match
+- add `isFileWatched`
+
 ## 0.0.4
 
 - Fix windows and linux issues
