@@ -77,7 +77,11 @@ test('get files', async t => {
     const processor = (file, fileContent) => JSON.parse(fileContent);
     const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir, fileProcessor: processor});
     var result = await cache.getFiles();
-    t.deepEqual(result, ['file1.md', 'subdir/file2.json','subdir/subsubdir/file3.json']);
+    t.deepEqual(result, [
+        'file1.md', 
+        path.join('subdir', 'file2.json'),
+        path.join('subdir', 'subsubdir', 'file3.json')
+    ]);
     t.pass();
 });
 

@@ -15,7 +15,10 @@ matrix:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install
+  - npm --version
+  - npm -g install npm@2
+  - set PATH=%APPDATA%\npm;%PATH%
+  - npm install --ignore-scripts
 
 test_script:
   - node --version
