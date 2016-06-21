@@ -6,7 +6,8 @@
   "scripts": {
     "prepublish": "npm test",
     "test": "ava",
-    "posttest": "semistandard index.js"
+    "posttest": "semistandard index.js",
+    "puml": "puml generate flow.puml -o flow.png"
   },
   "files": [
     "index.js"
@@ -29,6 +30,7 @@
     "ava": "^0.15.2",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
+    "node-plantuml": "^0.4.4",
     "rimraf": "^2.5.2",
     "semistandard": "^8.0.0"
   }

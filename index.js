@@ -10,12 +10,14 @@ function HotFileCache (patterns, options) {
   if (!this.options.cwd) {
     this.options.cwd = process.cwd();
   }
+  // Turn atomic off by default
+  this.options.atomic = this.options.atomic === undefined ? false : this.options.atomic;
   // Turn string patterns into array
   this.patterns = [].concat(patterns);
   // Turn functions into array
   this.fileProcessor = [].concat(options.fileProcessor || []);
   // Remove fileMap from chokidar options
-  delete (options.fileProcessors);
+  delete (options.fileProcessor);
   // Initialize cache
   this.cache = {};
   // Watched files
@@ -99,10 +101,12 @@ HotFileCache.prototype.isFileWatched = function (file) {
 };
 
 /**
- * invalidate cache
+ * Invalidate cache
  */
 HotFileCache.prototype.invalidateCache = function (reason, filepath) {
-  this.emit('cache-revoked', filepath);
+  if (this.cache[filepath]) {
+    this.emit('cache-revoked', filepath);
+  }
   delete this.cache[filepath];
 };
 

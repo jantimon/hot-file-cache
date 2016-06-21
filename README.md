@@ -28,13 +28,14 @@ Processors
 
 
 ```javascript
-var cache = new HotFileCache('*.md', {
+var cache = new HotFileCache('*.json', {
   cwd: dir,
   fileProcessor: function (fileContent) {
+    // this will be executed only once per file
     return JSON.parse(fileContent);
   }
 });
-cache.readFile('README.md').then(function(content) {
+cache.readFile('demo.json').then(function(content) {
   console.log(content);
 });
 ```
