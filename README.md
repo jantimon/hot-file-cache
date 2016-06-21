@@ -5,11 +5,6 @@ Hot File Cache
 
 A file cache which will invalidate automatically if the source changes
 
-Concept
------------
-
-[![Concept flow uml](https://raw.githubusercontent.com/jantimon/hot-file-cache/master/flow.png)](https://github.com/jantimon/hot-file-cache/blob/master/flow.puml)
-
 
 Installation
 ------------
@@ -24,8 +19,8 @@ Basic Usage
 Add the plugin to your webpack config as follows:
 
 ```javascript
-var cache = new HotFileCache('*.md', {cwd: dir});
-cache.readFile('README.md').then(function(content) {
+var hfc = new HotFileCache('*.md', {cwd: dir});
+hfc.readFile('README.md').then(function(content) {
   console.log(content);
 });
 ```
@@ -34,14 +29,14 @@ Processors
 
 
 ```javascript
-var cache = new HotFileCache('*.json', {
+var hfc = new HotFileCache('*.json', {
   cwd: dir,
   fileProcessor: function (fileContent) {
     // this will be executed only once per file
     return JSON.parse(fileContent);
   }
 });
-cache.readFile('demo.json').then(function(content) {
+hfc.readFile('demo.json').then(function(content) {
   console.log(content);
 });
 ```
@@ -50,6 +45,36 @@ Options:
 
 All options except the `fileProcessor` are equal to [chokidar](https://github.com/paulmillr/chokidar#getting-started).
 
+Visualisation
+-----------
+
+```javascript
+var hfc = new HotFileCache('*.json', {
+  cwd: dir,
+  fileProcessor: function (fileContent) {
+    // this will be executed only once per file
+    return JSON.parse(fileContent);
+  }
+});
+hfc.readFile('demo.json') // 1
+  .then(function(content) {
+    console.log(content);
+  });
+hfc.readFile('demo.json') // 2
+  .then(function(content) {
+    console.log(content);
+  });
+hfc.readFile('demo.json') // 3
+  .then(function(content) {
+    console.log(content);
+  });
+hfc.readFile('demo.json') // 4
+  .then(function(content) {
+    console.log(content);
+  });
+```
+
+[![Concept flow uml](https://raw.githubusercontent.com/jantimon/hot-file-cache/master/flow.png)](https://github.com/jantimon/hot-file-cache/blob/master/flow.puml)
 
 # Changelog
 
