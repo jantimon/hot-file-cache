@@ -1,6 +1,6 @@
 {
   "name": "hot-file-cache",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A file cache for development which will invalidate automatically if the source changes",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "ava": "^0.15.2",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
-    "rimraf": "^2.5.2"
+    "rimraf": "^2.5.2",
+    "semistandard": "^8.0.0"
   }
 }

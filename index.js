@@ -26,7 +26,7 @@ function HotFileCache (patterns, options) {
   }.bind(this));
   // Init watcher on file changes
   this.watcher.then(function (watcher) {
-    watcher.on('all', this.fileChangeHandler.bind(this));
+    watcher.on('all', this.invalidateCache.bind(this));
   }.bind(this));
 }
 
@@ -70,9 +70,9 @@ HotFileCache.prototype.readFile = function (file) {
 };
 
 /**
- * @invalidate cache
+ * invalidate cache
  */
-HotFileCache.prototype.fileChangeHandler = function (reason, filepath) {
+HotFileCache.prototype.invalidateCache = function (reason, filepath) {
   this.emit('cache-revoked', filepath);
   delete this.cache[filepath];
 };
