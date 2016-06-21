@@ -1,3 +1,7 @@
+## 0.0.6
+
+- Set `atomic:false` by default for faster cache invalidation
+
 ## 0.0.5
 
 - BREAKING CHANGE: `getFiles` returns absolute paths
