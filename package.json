@@ -1,7 +1,7 @@
 {
   "name": "hot-file-cache",
   "version": "0.0.7",
-  "description": "A file cache for development which will invalidate automatically if the source changes",
+  "description": "A watched file cache which will invalidate automatically if the source changes",
   "main": "index.js",
   "scripts": {
     "prepublish": "npm test",
@@ -29,7 +29,8 @@
     "glob",
     "globule",
     "filecache",
-    "inmemory"
+    "inmemory",
+    "watcher"
   ],
   "dependencies": {
     "chokidar": "^1.5.2",
