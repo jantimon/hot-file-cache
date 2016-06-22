@@ -8,6 +8,7 @@ const mkdirp = denodeify(require('mkdirp'));
 const rimraf = denodeify(require('rimraf'));
 const readFile = denodeify(require('fs').readFile);
 const writeFile = denodeify(require('fs').writeFile);
+const unlink = denodeify(require('fs').unlink);
 
 const tmp = path.resolve(__dirname, '..', 'tmp', 'testing');
 const fixtures = path.resolve(__dirname, 'fixtures');
@@ -72,7 +73,7 @@ test('fileExists', async t => {
     t.pass();
 });
 
-test('fileExists throws error for unwatched file', async t => {
+test('fileExists throws error if the file does not match the pattern', async t => {
     const dir = await createTestEnvironment();
     const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});
     let error;
@@ -85,7 +86,29 @@ test('fileExists throws error for unwatched file', async t => {
     t.pass();
 });
 
-test('fileRead throws error for unwatched file', async t => {
+test('fileExists is updated if the file is removed', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});
+    const filename = path.join(dir, 'file1.md');
+    t.is(await cache.fileExists(filename), true);
+    await unlink(filename);
+    await sleep(fileEventDelay);
+    t.is(await cache.fileExists(filename), false);
+    t.pass();
+});
+
+test('fileExists is updated if the folder is removed', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});
+    const filename = path.join(dir, 'subdir', 'file2.json');
+    t.is(await cache.fileExists(filename), true);
+    await rimraf(path.join(dir, 'subdir'));
+    await sleep(fileEventDelay);
+    t.is(await cache.fileExists(filename), false);
+    t.pass();
+});
+
+test('fileRead throws error if the file does not match the pattern', async t => {
     const dir = await createTestEnvironment();
     const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});
     let error;

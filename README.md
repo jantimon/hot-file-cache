@@ -3,8 +3,7 @@ Hot File Cache
 [![npm version](https://badge.fury.io/js/hot-file-cache.svg)](http://badge.fury.io/js/hot-file-cache) [![Dependency Status](https://david-dm.org/jantimon/hot-file-cache.svg)](https://david-dm.org/jantimon/hot-file-cache) [![Build status](https://travis-ci.org/jantimon/hot-file-cache.svg)](https://travis-ci.org/jantimon/hot-file-cache) [![Build status](https://ci.appveyor.com/api/projects/status/u0798wdxt4qho7xq/branch/master?svg=true)](https://ci.appveyor.com/project/jantimon/hot-file-cache/branch/master)
  [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
 
-A file cache which will invalidate automatically if the source changes
-
+A file/glob cache which will invalidate automatically if the source changes (powered by [chokidar](https://github.com/paulmillr/chokidar))
 
 Installation
 ------------
@@ -16,7 +15,6 @@ $ npm install --save-dev hot-file-cache
 
 Basic Usage
 -----------
-Add the plugin to your webpack config as follows:
 
 ```javascript
 var hfc = new HotFileCache('*.md', {cwd: dir});
@@ -26,6 +24,7 @@ hfc.readFile('README.md').then(function(content) {
 ```
 
 Processors
+-----------
 
 
 ```javascript
@@ -43,8 +42,32 @@ hfc.readFile('demo.json').then(function(content) {
 ```
 
 Options:
+-----------
 
 All options except the `fileProcessor` are equal to [chokidar](https://github.com/paulmillr/chokidar#getting-started).
+
+
+API:
+-----------
+
+Because of the asynchronous nature of disk operations all functions return a `Promise`.
+
+ `getFiles()`
+
+getFiles returns an array of all absolute filenames matching the pattern. As it looks into a warm cache it doesn't need any disk operations.
+
+`fileExists(absolutePath)` 
+
+fileExists returns true if the given file exists.  
+As it looks in into a warm cache it doesn't need any disk operations.
+
+
+`readFile(absolutePath)`
+
+readFile returns the content of the given file.  
+If a file processor is passed the content is also processed.
+The processed result is cached until `chokidar` detects a file change on the disk.
+
 
 Visualisation
 -----------

@@ -1,6 +1,6 @@
 {
   "name": "hot-file-cache",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A file cache for development which will invalidate automatically if the source changes",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,16 @@
   "bugs": {
     "url": "https://github.com/jantimon/hot-file-cache/issues"
   },
+  "keywords": [
+    "cache",
+    "memory",
+    "file",
+    "chokidar",
+    "glob",
+    "globule",
+    "filecache",
+    "inmemory"
+  ],
   "dependencies": {
     "chokidar": "^1.5.2",
     "denodeify": "^1.2.1",

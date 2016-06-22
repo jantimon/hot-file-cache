@@ -1,3 +1,7 @@
+## 0.07
+
+- Fixed an issue where fileExits caused false positivs
+
 ## 0.0.6
 
 - Set `atomic:false` by default for faster cache invalidation

@@ -31,7 +31,7 @@ function HotFileCache (patterns, options) {
       this.watched.push(path.join(this.options.cwd, file));
     }.bind(this));
     watcher.on('unlink', function (file) {
-      var index = this.watched.indexOf(file);
+      var index = this.watched.indexOf(path.join(this.options.cwd, file));
       if (index !== -1) {
         this.watched.splice(index, 1);
       }
