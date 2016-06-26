@@ -149,7 +149,7 @@ test('get files', async t => {
     const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir, fileProcessor: processor});
     var result = await cache.getFiles();
     t.deepEqual(result, [
-        path.join(dir, 'file1.md'), 
+        path.join(dir, 'file1.md'),
         path.join(dir, 'subdir', 'file2.json'),
         path.join(dir, 'subdir', 'subsubdir', 'file3.json')
     ]);
@@ -171,6 +171,18 @@ test('async file processor', async t => {
     const cache = new HotFileCache(['**/*.json'], {cwd: dir, fileProcessor: processor});
     var result = await cache.readFile(path.join(dir, 'subdir', 'subsubdir', 'file3.json'));
     t.deepEqual(result, {foo: 'baz'});
+    t.pass();
+});
+
+test('multiple async file processor', async t => {
+    const dir = await createTestEnvironment();
+    const processors = [
+      (file, fileContent) => new Promise((resolve) => setTimeout(() => resolve(JSON.parse(fileContent)))),
+      (file, fileContent) => new Promise((resolve) => setTimeout(() => resolve(fileContent.foo)))
+    ];
+    const cache = new HotFileCache(['**/*.json'], {cwd: dir, fileProcessor: processors});
+    var result = await cache.readFile(path.join(dir, 'subdir', 'subsubdir', 'file3.json'));
+    t.deepEqual(result, 'baz');
     t.pass();
 });
 
