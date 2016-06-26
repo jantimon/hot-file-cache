@@ -1,7 +1,8 @@
 Hot File Cache
 ========================================
 [![npm version](https://badge.fury.io/js/hot-file-cache.svg)](http://badge.fury.io/js/hot-file-cache) [![Dependency Status](https://david-dm.org/jantimon/hot-file-cache.svg)](https://david-dm.org/jantimon/hot-file-cache) [![Build status](https://travis-ci.org/jantimon/hot-file-cache.svg)](https://travis-ci.org/jantimon/hot-file-cache) [![Build status](https://ci.appveyor.com/api/projects/status/u0798wdxt4qho7xq/branch/master?svg=true)](https://ci.appveyor.com/project/jantimon/hot-file-cache/branch/master)
- [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
+ [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard) 
+[![Coverage Status](https://coveralls.io/repos/github/jantimon/hot-file-cache/badge.svg?branch=master)](https://coveralls.io/github/jantimon/hot-file-cache?branch=master)
 
 A file/glob cache which will invalidate automatically if the source changes (powered by [chokidar](https://github.com/paulmillr/chokidar))
 

@@ -15,9 +15,9 @@ function HotFileCache (patterns, options) {
   // Turn string patterns into array
   this.patterns = [].concat(patterns);
   // Turn functions into array
-  this.fileProcessor = [].concat(options.fileProcessor || []);
+  this.fileProcessor = [].concat(this.options.fileProcessor || []);
   // Remove fileMap from chokidar options
-  delete (options.fileProcessor);
+  delete (this.options.fileProcessor);
   // Initialize cache
   this.cache = {};
   // Watched files
@@ -27,11 +27,14 @@ function HotFileCache (patterns, options) {
     var watcher = chokidar.watch(this.patterns, this.options);
     watcher.on('ready', resolve.bind(null, watcher));
     watcher.on('error', reject);
+    // Add files to the internal `getFiles` cache on creation
     watcher.on('add', function (file) {
       this.watched.push(path.join(this.options.cwd, file));
     }.bind(this));
+    // Remove files from the internal `getFiles` cache on deletion
     watcher.on('unlink', function (file) {
       var index = this.watched.indexOf(path.join(this.options.cwd, file));
+      /* istanbul ignore else */
       if (index !== -1) {
         this.watched.splice(index, 1);
       }

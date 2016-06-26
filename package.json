@@ -1,12 +1,17 @@
 {
   "name": "hot-file-cache",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A watched file cache which will invalidate automatically if the source changes",
   "main": "index.js",
   "scripts": {
     "prepublish": "npm test",
-    "test": "ava",
-    "posttest": "semistandard index.js",
+    "test": "npm-run-all test:*",
+    "test:ava": "ava -v",
+    "test:nyc": "nyc ava",
+    "posttest": "npm-run-all posttest:*",
+    "posttest:lint": "semistandard index.js",
+    "posttest:coverage-report": "nyc report --reporter=html",
+    "posttest:coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
     "puml": "puml generate flow.puml -o flow.png"
   },
   "files": [
@@ -39,9 +44,12 @@
   },
   "devDependencies": {
     "ava": "^0.15.2",
+    "coveralls": "^2.11.9",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "node-plantuml": "^0.4.4",
+    "npm-run-all": "^2.2.2",
+    "nyc": "^6.6.1",
     "rimraf": "^2.5.2",
     "semistandard": "^8.0.0"
   }

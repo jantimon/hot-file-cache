@@ -1,3 +1,7 @@
+## 0.08
+
+- Support instantiation without options
+
 ## 0.07
 
 - Fixed an issue where fileExits caused false positivs

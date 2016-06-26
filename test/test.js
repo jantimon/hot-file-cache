@@ -20,13 +20,27 @@ async function createTestEnvironment() {
   const targetDir = path.resolve(tmp, 'test-' + testDirId++);
   await mkdirp(targetDir);
   await copy(fixtures, targetDir);
-  await sleep(fileEventDelay);
   return targetDir;
 }
+
+test('uses current cwd if no cwd is specified', async t => {
+    const cache = new HotFileCache('*.md');
+    t.is(cache.options.cwd, process.cwd());
+    t.pass();
+});
 
 test('reads file from disk', async t => {
     const dir = await createTestEnvironment();
     const cache = new HotFileCache('*.md', {cwd: dir});
+    const expectedContent = await readFile(path.join(fixtures, 'file1.md'));
+    const content = await cache.readFile(path.join(dir, 'file1.md'));
+    t.is(content.toString(), expectedContent.toString());
+    t.pass();
+});
+
+test('reads file from disk with atomic', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache('*.md', {cwd: dir, atomic: true});
     const expectedContent = await readFile(path.join(fixtures, 'file1.md'));
     const content = await cache.readFile(path.join(dir, 'file1.md'));
     t.is(content.toString(), expectedContent.toString());
