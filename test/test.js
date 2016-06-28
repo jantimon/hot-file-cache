@@ -122,6 +122,17 @@ test('fileExists is updated if the folder is removed', async t => {
     t.pass();
 });
 
+test('fileExists is not updated if hot is disabled and the folder is removed', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir, hot: false});
+    const filename = path.join(dir, 'subdir', 'file2.json');
+    t.is(await cache.fileExists(filename), true);
+    await rimraf(path.join(dir, 'subdir'));
+    await sleep(fileEventDelay);
+    t.is(await cache.fileExists(filename), true);
+    t.pass();
+});
+
 test('fileRead throws error if the file does not match the pattern', async t => {
     const dir = await createTestEnvironment();
     const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});

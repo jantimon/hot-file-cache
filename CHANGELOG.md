@@ -1,3 +1,8 @@
+## 0.10
+
+- Add `hot` option
+- Add `close()` method
+
 ## 0.09
 
 - Add method to invalidate the entire cache

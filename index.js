@@ -44,6 +44,10 @@ function HotFileCache (patterns, options) {
   this.watcher.then(function (watcher) {
     watcher.on('all', this.invalidateCache.bind(this));
   }.bind(this));
+  // Allow to disable the hot feature
+  if (this.options.hot === false) {
+    this.close();
+  }
 }
 
 Object.setPrototypeOf(HotFileCache.prototype, EventEmitter.prototype);
@@ -118,6 +122,15 @@ HotFileCache.prototype.invalidateCache = function (reason, filepath) {
  */
 HotFileCache.prototype.invalidateEntireCache = function (reason) {
   Object.keys(this.cache).forEach(this.invalidateCache.bind(this, reason));
+};
+
+/**
+ * Stop file watching
+ */
+HotFileCache.prototype.close = function () {
+  this.watcher.then(function (watcher) {
+    watcher.close();
+  });
 };
 
 module.exports = HotFileCache;

@@ -45,7 +45,12 @@ hfc.readFile('demo.json').then(function(content) {
 Options:
 -----------
 
-All options except the `fileProcessor` are equal to [chokidar](https://github.com/paulmillr/chokidar#getting-started).
+You can pass all [chokidar](https://github.com/paulmillr/chokidar#getting-started) options.
+
+Additionally you can pass the following options:
+
++ `hot` (true|false) - Default: true - Wether to watch for changes or not
++ `fileProcessor`: (function) - Optional - Allow to process the file contents before they are written into the cache.
 
 
 API:
@@ -68,6 +73,10 @@ As it looks in into a warm cache it doesn't need any disk operations.
 readFile returns the content of the given file.  
 If a file processor is passed the content is also processed.
 The processed result is cached until `chokidar` detects a file change on the disk.
+
+`close()`
+
+close will stop the file watching
 
 
 Visualisation
