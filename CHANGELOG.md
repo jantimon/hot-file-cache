@@ -1,3 +1,7 @@
+## 0.09
+
+- Add method to invalidate the entire cache
+
 ## 0.08
 
 - Support instantiation without options

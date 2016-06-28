@@ -108,9 +108,16 @@ HotFileCache.prototype.isFileWatched = function (file) {
  */
 HotFileCache.prototype.invalidateCache = function (reason, filepath) {
   if (this.cache[filepath]) {
-    this.emit('cache-revoked', filepath);
+    this.emit('cache-revoked', filepath, reason);
   }
   delete this.cache[filepath];
+};
+
+/**
+ * Invalidate entire cache
+ */
+HotFileCache.prototype.invalidateEntireCache = function (reason) {
+  Object.keys(this.cache).forEach(this.invalidateCache.bind(this, reason));
 };
 
 module.exports = HotFileCache;

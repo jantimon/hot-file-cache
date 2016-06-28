@@ -156,6 +156,16 @@ test('get files', async t => {
     t.pass();
 });
 
+test('invalidate entire cache', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], { cwd: dir });
+    await cache.readFile(path.join(dir, 'subdir', 'subsubdir', 'file3.json'));
+    t.is(Object.keys(cache.cache).length, 1);
+    cache.invalidateEntireCache();
+    t.is(Object.keys(cache.cache).length, 0);
+    t.pass();
+});
+
 test('file processor', async t => {
     const dir = await createTestEnvironment();
     const processor = (file, fileContent) => JSON.parse(fileContent);
