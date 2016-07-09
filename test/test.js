@@ -147,6 +147,22 @@ test('fileExists is not updated if hot is disabled and the folder is removed', a
     t.pass();
 });
 
+test('reads file everytime if cache is disabled', async t => {
+    let processorCalls = 0;
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], {
+      cwd: dir,
+      useCache: false,
+      fileProcessor: () => ++processorCalls
+    });
+    const filename = path.join(dir, 'subdir', 'file2.json');
+    await cache.readFile(filename);
+    t.is(processorCalls, 1);
+    await cache.readFile(filename);
+    t.is(processorCalls, 2);
+    t.pass();
+});
+
 test('fileRead throws error if the file does not match the pattern', async t => {
     const dir = await createTestEnvironment();
     const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});

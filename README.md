@@ -49,6 +49,7 @@ You can pass all [chokidar](https://github.com/paulmillr/chokidar#getting-starte
 Additionally you can pass the following options:
 
 + `hot` (true|false) - Default: true - Wether to watch for changes or not
++ `useCache` (true|false) - Default: true - Wether to cache the disk operations
 + `fileProcessor`: (function) - Optional - Allow to process the file contents before they are written into the cache.
 
 

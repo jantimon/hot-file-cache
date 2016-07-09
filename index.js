@@ -11,6 +11,8 @@ function HotFileCache (patterns, options) {
   if (!this.options.cwd) {
     this.options.cwd = process.cwd();
   }
+  // Use a cache by default
+  this.options.isCachingEnabled = this.options.useCache === undefined ? true : this.options.useCache;
   // Turn atomic off by default
   this.options.atomic = this.options.atomic === undefined ? false : this.options.atomic;
   // Turn string patterns into array
@@ -91,19 +93,23 @@ HotFileCache.prototype.readFile = function (file) {
     throw new Error('File ' + file + ' does not match any pattern');
   }
   return this.watcher.then(function () {
-    if (!cache[relativeFile]) {
-      cache[relativeFile] = readFile(file).then(function (fileContent) {
-        var result = Promise.resolve(fileContent);
-        this.fileProcessor.forEach(function (processor) {
-          result = result.then(function (content) {
-            return processor(file, content);
-          });
-        });
-        return result;
-      }.bind(this));
-      this.emit('read', file);
+    if (cache[relativeFile]) {
+      return cache[relativeFile];
     }
-    return cache[relativeFile];
+    var processedFile = readFile(file).then(function (fileContent) {
+      var result = Promise.resolve(fileContent);
+      this.fileProcessor.forEach(function (processor) {
+        result = result.then(function (content) {
+          return processor(file, content);
+        });
+      });
+      return result;
+    }.bind(this));
+    this.emit('read', file);
+    if (this.options.isCachingEnabled) {
+      cache[relativeFile] = processedFile;
+    }
+    return processedFile;
   }.bind(this));
 };
 

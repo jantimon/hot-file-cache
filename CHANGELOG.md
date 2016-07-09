@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Allow to turn of caching
+
 ## 1.0.0
 
 - Forward chokidar the following events: `all`, `add`, `addDir`, `change`, `unlink` or `unlinkDir`
