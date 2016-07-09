@@ -1,3 +1,4 @@
+'use strict';
 var path = require('path');
 var denodeify = require('denodeify');
 var globule = require('globule');
@@ -40,9 +41,16 @@ function HotFileCache (patterns, options) {
       }
     }.bind(this));
   }.bind(this));
-  // Init watcher on file changes
+  // Init watcher
   this.watcher.then(function (watcher) {
+    // Invalidate files on file changes
     watcher.on('all', this.invalidateCache.bind(this));
+    // Forward chokidar 'all' event
+    // https://github.com/paulmillr/chokidar#methods--events
+    watcher.on('all', this.emit.bind(this, 'all'));
+    // https://github.com/paulmillr/chokidar#methods--events
+    // Forward the following events: add, addDir, change, unlink, unlinkDir
+    watcher.on('all', this.emit.bind(this));
   }.bind(this));
   // Allow to disable the hot feature
   if (this.options.hot === false) {

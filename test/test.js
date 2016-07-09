@@ -111,6 +111,20 @@ test('fileExists is updated if the file is removed', async t => {
     t.pass();
 });
 
+test('chokidar events are forwared', async t => {
+    const dir = await createTestEnvironment();
+    const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});
+    const filename = path.join(dir, 'file1.md');
+    const events = [];
+    t.is(await cache.fileExists(filename), true);
+    cache.on('all',() => events.push('all'));
+    cache.on('unlink',() => events.push('unlink'));
+    await unlink(filename);
+    await sleep(fileEventDelay);
+    t.deepEqual(events, ['all', 'unlink']);
+    t.pass();
+});
+
 test('fileExists is updated if the folder is removed', async t => {
     const dir = await createTestEnvironment();
     const cache = new HotFileCache(['*.md', '**/*.json'], {cwd: dir});

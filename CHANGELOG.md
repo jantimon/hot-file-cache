@@ -1,17 +1,21 @@
-## 0.10
+## 1.0.0
+
+- Forward chokidar the following events: `all`, `add`, `addDir`, `change`, `unlink` or `unlinkDir`
+
+## 0.0.10
 
 - Add `hot` option
 - Add `close()` method
 
-## 0.09
+## 0.0.9
 
 - Add method to invalidate the entire cache
 
-## 0.08
+## 0.0.8
 
 - Support instantiation without options
 
-## 0.07
+## 0.0.7
 
 - Fixed an issue where fileExits caused false positivs
 
