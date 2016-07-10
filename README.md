@@ -127,7 +127,7 @@ hfc.readFile('demo.json') // 4
 Performance
 -----------
 
-Chokidar has a lot of of performance optimisations
+Hot file cache uses the performance optimisations of chokidar which ensure that only one file listener is used even if multiple hot-file-caches wait for changes on the same directory or file. 
 
 # Changelog
 
